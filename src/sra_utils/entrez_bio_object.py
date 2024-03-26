@@ -1,7 +1,9 @@
-from entrez import EntrezManager
 from functools import cached_property, lru_cache
-from ncbi import ncbi_base
+
 from lxml import etree
+
+from .ncbi import ncbi_base
+from .entrez import EntrezManager
 
 class EntrezBioObject:
     def __init__(self, accession=None):

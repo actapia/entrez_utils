@@ -1,11 +1,11 @@
-import requests
 import multiprocessing
 import threading
 import time
 import io
 from lxml import etree
-import url_path
-from url_path import URLPath
+
+from . import url_path
+from .url_path import URLPath
 
 entrez_base = URLPath.from_str("https://eutils.ncbi.nlm.nih.gov/entrez/eutils")
 

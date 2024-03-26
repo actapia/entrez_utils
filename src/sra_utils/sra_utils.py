@@ -1,9 +1,8 @@
-from entrez import EntrezManager
-from IPython import embed
 from lxml import etree
 from functools import cached_property
-from entrez_bio_object import FetchableBioObject
-from sra_library import SRALibrary
+
+from .entrez_bio_object import FetchableBioObject
+from .sra_library import SRALibrary
 
 html_ns = {
     "x": "http://www.w3.org/1999/xhtml"
