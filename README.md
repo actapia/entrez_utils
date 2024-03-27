@@ -1,4 +1,4 @@
-# sra_utils
+# entrez_utils
 
 This library allows you to access information in remote Entrez databases from 
 Python.
@@ -15,7 +15,7 @@ NCBI requests that the email address of the user be sent with requests, so an
 email is required to construct an `EntrezManager`.
 
 ```python
-from sra_utils import EntrezManager
+from entrez_utils import EntrezManager
 
 man = EntrezManager("foo@example.com")
 ```
@@ -25,7 +25,7 @@ man = EntrezManager("foo@example.com")
 Most objects can be constructed with either an accession or an Entrez ID.
 
 ```python
-from sra_utils import BioProject, BioSample, SRAExperiment, SRARun
+from entrez_utils import BioProject, BioSample, SRAExperiment, SRARun
 
 project = BioProject(man, accession="PRJNA293777")
 sample = BioSample(man, entrez_id="4009779")
