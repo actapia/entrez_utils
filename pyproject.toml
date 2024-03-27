@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "simple_blast"
+name = "sra_utils"
 version = "0.0.1"
 authors = [
     { name = "Andrew Tapia", email = "andrew.tapia@uky.edu" }
