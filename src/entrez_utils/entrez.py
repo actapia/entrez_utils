@@ -2,6 +2,7 @@ import multiprocessing
 import threading
 import time
 import io
+import math
 from lxml import etree
 
 from . import url_path
@@ -57,6 +58,25 @@ class EntrezManager:
         kwargs["dbfrom"] = dbfrom
         kwargs["db"] = db
         return self._xml_parsed(entrez_base / "elink.fcgi", **kwargs)
+
+    def esearch(self, db, term, **kwargs):
+        kwargs["db"] = db
+        kwargs["term"] = term
+        return self._xml_parsed(entrez_base / "esearch.fcgi", **kwargs)
+
+    def esearch_paged(self, db, term, keep, page_size=20, **kwargs):
+        ret_start = 0
+        count = math.inf
+        kwargs["RetMax"] = page_size
+        res = []
+        while ret_start < count:            
+            resp = self.esearch(db, term, RetStart=ret_start, **kwargs)
+            count = int(resp.xpath("//Count")[0].text)
+            new = resp.xpath(f"//{keep}")
+            res = res + new
+            ret_start += len(new)
+        return res
+            
 
 for req_type in ("get", "post"):
     setattr(

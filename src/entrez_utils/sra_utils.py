@@ -109,6 +109,19 @@ class BioSample(FetchableBioObject):
             el.attrib["attribute_name"]: el.text 
             for el in self.xml.xpath(f"//Attribute")
         }
+
+    @classmethod
+    def from_sra_accessions(cls, man, accs):
+        res = man.esearch_paged(
+            cls.db,
+            " OR ".join(accs),
+            field="accn",
+            keep="Id"
+        )
+        from IPython import embed
+        #embed()
+        assert len(res) == len(accs)
+        return [cls(man, entrez_id=elem.text) for elem in res]
     
     # def get_sample_attribute(self, attr):
     #     return self.xml.xpath(f"//Attribute[@attribute_name='{attr}']")[0].text
