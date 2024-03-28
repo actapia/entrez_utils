@@ -3,6 +3,7 @@ from functools import cached_property
 
 from .entrez_bio_object import FetchableBioObject
 from .sra_library import SRALibrary
+from .sra_files import SRAFile
 
 html_ns = {
     "x": "http://www.w3.org/1999/xhtml"
@@ -168,7 +169,7 @@ class SRAExperiment(SRAObject):
     def runs(self):
         res = []
         for elem in self.xml.xpath("//RUN"):
-            run = SRARun.from_xml(etree.ElementTree(self._man), elem)
+            run = SRARun.from_xml(self._man, etree.ElementTree(elem))
             run.experiment = self
             res.append(run)
         return res
@@ -203,7 +204,7 @@ class SRAExperiment(SRAObject):
 
     @cached_property
     def title(self):
-        return self.xml.xpath("//TITLE")[0].text   
+        return self.xml.xpath("//TITLE")[0].text
 
 class SRARun(SRAObject):
     @cached_property
@@ -218,12 +219,19 @@ class SRARun(SRAObject):
     
     def get_accession(self):
         return self.xml.xpath("./IDENTIFIERS/PRIMARY_ID")[0].text
-    
+
     @cached_property
-    def download_link(self):
-        res = self.xml.xpath(
-            ("./SRAFiles/SRAFile[@semantic_name='SRA Normalized']/"
-             "Alternatives[@access_type='anonymous']")
-        )
-        assert len(res) == 1
-        return res[0].attrib["url"]
+    def files(self):
+        return [
+            SRAFile(etree.ElementTree(elem))
+            for elem in self.xml.xpath("//SRAFile")
+        ]
+    
+    # @cached_property
+    # def download_link(self):
+    #     res = self.xml.xpath(
+    #         ("./SRAFiles/SRAFile[@semantic_name='SRA Normalized']/"
+    #          "Alternatives[@access_type='anonymous']")
+    #     )
+    #     assert len(res) == 1
+    #     return res[0].attrib["url"]
