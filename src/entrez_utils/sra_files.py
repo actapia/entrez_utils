@@ -16,7 +16,7 @@ class SRAFile(XMLDataObject):
     version: int
     semantic_name: str
     supertype: str
-    sratoolkit: bool
+    sratoolkit: lambda x: bool(int(x))
 
     @cached_property
     def alternatives(self):
